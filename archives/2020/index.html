@@ -356,6 +356,33 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/20201127/Cocos2dx_4.x_project_makeup/" >
+            
+                <span>Cocos2dx 4.x 项目工程构建</span>
+        </a>
+        <div class="abstract-content">
+            Cocos2dx从4.0版本开始改用cmake, 删掉了原有的各个平台的工程文件, 但是没关系, 为了愉快地使用IDE进行编译, 可以使用cmake来构建工程文件供IDE使用.
+首先这篇文章中的项目文件是cocos new生成的, 前面的过程全部略过了, 从new得到的目录开始进行项目构建. 其次这里用的项目是个lua项目, 但是实际上都一样, 没有区别的.
+
+20201127更新:实际上官方有留方法, 就是用创建工程的那个脚本, 使用方法:
+123mkdir buildcd buildcocos run --proj-dir .. -p [mac|win32|android|linux...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/11/27</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/20201126/add_debuggable_to_androidmanifest/" >
             
                 <span>尝试改AndroidManifest并添加Debuggable</span>
@@ -377,36 +404,6 @@
             <!-- date  -->
             <div class="abstract-date">
                 <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/11/26</span>
-            </div>
-            <!-- tags  -->
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/20201124/Cocos2dx_4.x_project_makeup/" >
-            
-                <span>Cocos2dx 4.x 项目工程构建</span>
-        </a>
-        <div class="abstract-content">
-            Cocos2dx从4.0版本开始改用cmake, 删掉了原有的各个平台的工程文件, 但是没关系, 为了愉快地使用IDE进行编译, 可以使用cmake来构建工程文件供IDE使用.
-首先这篇文章中的项目文件是cocos new生成的, 前面的过程全部略过了, 从new得到的目录开始进行项目构建. 其次这里用的项目是个lua项目, 但是实际上都一样, 没有区别的.
-
-Windows上构建Visual Studio项目先创建个目录用来装项目工程(powershell)
-1mkdir win32-build &amp;&amp; cd win32-build;
-
-然后用cmake进行构建
-1cma...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/11/24</span>
             </div>
             <!-- tags  -->
             
@@ -538,6 +535,10 @@ Windows上构建Visual Studio项目先创建个目录用来装项目工程(power
     
     
     
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
         Total : 3
@@ -556,20 +557,6 @@ Windows上构建Visual Studio项目先创建个目录用来装项目工程(power
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/20201124/Cocos2dx_4.x_project_makeup/" >Cocos2dx 4.x 项目工程构建</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/20201126/add_debuggable_to_androidmanifest/" >尝试改AndroidManifest并添加Debuggable</a>
         </li>
     
@@ -581,6 +568,11 @@ Windows上构建Visual Studio项目先创建个目录用来装项目工程(power
     
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/27</span><a class="archive-post-title" href= "/20201127/Cocos2dx_4.x_project_makeup/" >Cocos2dx 4.x 项目工程构建</a>
+        </li>
     
     
         <li class="archive-post-item">
