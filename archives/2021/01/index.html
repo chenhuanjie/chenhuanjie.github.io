@@ -23,7 +23,7 @@
     <meta name="description" content="拒绝落入无限内耗的陷阱, 不要停下反思革新的步伐">
 <meta property="og:type" content="website">
 <meta property="og:title" content="短尾猫集散地">
-<meta property="og:url" content="http://chenhuanjie.github.io/archives/2020/12/">
+<meta property="og:url" content="http://chenhuanjie.github.io/archives/2021/01/">
 <meta property="og:site_name" content="短尾猫集散地">
 <meta property="og:description" content="拒绝落入无限内耗的陷阱, 不要停下反思革新的步伐">
 <meta property="og:locale" content="zh_CN">
@@ -356,20 +356,19 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/20201214/python_import/" >
+        <a class="abstract-title" href = "/20210110/ditherfade/" >
             
-                <span>Python中的import</span>
+                <span>Dither Fade效果学习</span>
         </a>
         <div class="abstract-content">
-            前段时间由于本蒟蒻才疏学浅, 写出来的服务器被ImportError填满, 于是腾了个时间出来整理下python中import相关的内容, 希望能够对看到这里的同学有些帮助. 其实多数内容都是抄自Python官方文档, 文中相关位置都给出了链接, 其中的内容真的非常详细, 给力! 这个问题本身非常简单, 现有如下所示两个文件:
-123456# a.pyimport bx = 1# b.pyfrom a import x
-
-然后在python交互环境中敲import a就会得到一个ImportError: cannot import name x. 表面上看上去由于a中引入了b, b又反过...
+            前几天看了Dithering相关的一些内容, 没有深入了解, 但是感觉值得记录一下.
+最初是因为在Unity的Amplify Shader Editor这个包 (很好的工具!) 的例子中看到了一个效果, 名字叫做Dithering Fade. 顺带一提这个效果以前被我误以为是screen-door透明, 其实不是, 透明的效果和这个还是差很多的. 抖出来的透明效果在性能上快得很, 而且随着像素密度的升高效果也很不错, 所以比较适合手机环境.
+Amplify Shader Editor中提供了两版实现, 一种是使用Bayer抖动表, 另一种则是使用Blue Noise Sampling做的...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/12/14</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/01/10</span>
             </div>
             <!-- tags  -->
             
