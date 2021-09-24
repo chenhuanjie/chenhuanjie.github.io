@@ -212,7 +212,7 @@
     
     <!-- 谷歌统计  -->
     
-<meta name="generator" content="Hexo 5.2.0"></head>
+<meta name="generator" content="Hexo 5.4.0"></head>
 
     
         <body class="post-body">
@@ -405,9 +405,9 @@ height:20vh;
 <p>然后-A参数指定编译的目标平台, 也就是要看咱运行的环境(原文叫target platform, architecture), 比如</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-A Win32</span><br><span class="line">-A x64</span><br><span class="line">-A ARM</span><br><span class="line">-A ARM64</span><br></pre></td></tr></table></figure>
 <p>运行成功之后在win32-build路径下会生成对应的解决方案项目文件, 直接用VS打开即可. 接下来就可以尝试编译运行了, 我这个版本会报一个链接错误, 找日志看到:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">14&gt;已完成生成项目“COPY_LUA-xxx.vcxproj”的操作 - 失败.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">14&gt;已完成生成项目“COPY_LUA-xxx.vcxproj”的操作 - 失败.</span><br></pre></td></tr></table></figure>
 <p>往上看找到具体报错, 发现是个python脚本运行失败了.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">14&gt;sync_folder.py: error: argument -l: expected one argument</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">14&gt;sync_folder.py: error: argument -l: expected one argument</span><br></pre></td></tr></table></figure>
 <p>这个sync_folder是4.0新增的一个用来同步res和src的脚本, 参考<a target="_blank" rel="noopener" href="https://forum.cocos.org/t/cocos2dx-4-0-cmake/86952">这篇帖子</a>, 其中指出:</p>
 <blockquote>
 <p>这个bug在于当前的写法并非支持无参选项。会让vs报错就不能直接启动项目。</p>
@@ -422,7 +422,7 @@ height:20vh;
 <p>同样的, 首先找个地方创建项目工程</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir ios_mac-build &amp;&amp; cd ios_mac-build;</span><br><span class="line">cmake .. -G &quot;Xcode&quot;</span><br></pre></td></tr></table></figure>
 <p>不出预料报错了, 提示“No CMAKE_C_COMPILER could be found.”, 不知道是不是最近换了Xcode12导致的. 具体报错内容大概长这样:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CMake Error at CMakeLists.txt:28 (project):</span><br><span class="line">    No CMAKE_C_COMPILER could be found.</span><br><span class="line">CMake Error at CMakeLists.txt:28 (project):</span><br><span class="line">    No CMAKE_CXX_COMPILER could be found.</span><br><span class="line">-- Configuring incomplete, errors occurred!</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CMake Error at CMakeLists.txt:28 (project):</span><br><span class="line">    No CMAKE_C_COMPILER could be found.</span><br><span class="line">CMake Error at CMakeLists.txt:28 (project):</span><br><span class="line">    No CMAKE_CXX_COMPILER could be found.</span><br><span class="line">-- Configuring incomplete, errors occurred!</span><br></pre></td></tr></table></figure>
 <p>首先我尝试在google上搜索, 得出两个解决方案, 有遇到这个问题的小伙伴可以先尝试下:</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo xcode-select --reset</span><br><span class="line">sudo xcode-select --switch /Applications/Xcode.app</span><br></pre></td></tr></table></figure>
 <p>但是在我的问题中并没能正常工作, 于是我想到可能是cmake版本过旧, 或者cmake的配置在更新Xcode之后没有自动调整, 于是我尝试更新cmake:</p>
@@ -520,8 +520,6 @@ height:20vh;
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-panel-archives">
     <!-- 在ejs中将archive按照时间排序 -->
-    
-    
     
     
     
@@ -694,7 +692,22 @@ jsonContent:
     
         <script src="/scripts/share.js" async></script>    
      
-    </body>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
 </html>
 
 

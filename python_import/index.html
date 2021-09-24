@@ -212,7 +212,7 @@
     
     <!-- 谷歌统计  -->
     
-<meta name="generator" content="Hexo 5.2.0"></head>
+<meta name="generator" content="Hexo 5.4.0"></head>
 
     
         <body class="post-body">
@@ -397,7 +397,7 @@ height:20vh;
 <li>from module import name</li>
 </ul>
 <p>参考<a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/reference/simple_stmts.html#the-import-statement">这份文档</a>, 其定义如下所示:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import_stmt     ::&#x3D;  &quot;import&quot; module [&quot;as&quot; identifier] (&quot;,&quot; module [&quot;as&quot; identifier])*</span><br><span class="line">                     | &quot;from&quot; relative_module &quot;import&quot; identifier [&quot;as&quot; identifier]</span><br><span class="line">                     (&quot;,&quot; identifier [&quot;as&quot; identifier])*</span><br><span class="line">                     | &quot;from&quot; relative_module &quot;import&quot; &quot;(&quot; identifier [&quot;as&quot; identifier]</span><br><span class="line">                     (&quot;,&quot; identifier [&quot;as&quot; identifier])* [&quot;,&quot;] &quot;)&quot;</span><br><span class="line">                     | &quot;from&quot; module &quot;import&quot; &quot;*&quot;</span><br><span class="line">module          ::&#x3D;  (identifier &quot;.&quot;)* identifier</span><br><span class="line">relative_module ::&#x3D;  &quot;.&quot;* module | &quot;.&quot;+</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import_stmt     ::=  &quot;import&quot; module [&quot;as&quot; identifier] (&quot;,&quot; module [&quot;as&quot; identifier])*</span><br><span class="line">                     | &quot;from&quot; relative_module &quot;import&quot; identifier [&quot;as&quot; identifier]</span><br><span class="line">                     (&quot;,&quot; identifier [&quot;as&quot; identifier])*</span><br><span class="line">                     | &quot;from&quot; relative_module &quot;import&quot; &quot;(&quot; identifier [&quot;as&quot; identifier]</span><br><span class="line">                     (&quot;,&quot; identifier [&quot;as&quot; identifier])* [&quot;,&quot;] &quot;)&quot;</span><br><span class="line">                     | &quot;from&quot; module &quot;import&quot; &quot;*&quot;</span><br><span class="line">module          ::=  (identifier &quot;.&quot;)* identifier</span><br><span class="line">relative_module ::=  &quot;.&quot;* module | &quot;.&quot;+</span><br></pre></td></tr></table></figure>
 <p>我不喜欢原文列出的繁琐步骤, 这里大概概括下:</p>
 <p>对于<code>import module</code>的方式, 首先查找模块, 进行加载并初始化模块, 并在局部命名空间中定义相对应的名称; 而对于<code>from module import name</code>的方式, 在加载并初始化模块完成后, 会去检查每个需要引入的符号是否存在, 如果没有则去查找子模块, 如果存在则在局部命名空间中定义相应名称, 否则抛出异常.</p>
 <p>也就是说后者相对前者多了一步对于目标模块是否包含要引入的标识符的判断, 也就是说如果引入的时候目标模块中没有包含对应符号就GG了.</p>
@@ -585,8 +585,6 @@ height:20vh;
     
     
     
-    
-    
     <div class="total-and-search">
         <div class="total-archive">
         Total : 5
@@ -712,7 +710,22 @@ jsonContent:
     
         <script src="/scripts/share.js" async></script>    
      
-    </body>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
 </html>
 
 

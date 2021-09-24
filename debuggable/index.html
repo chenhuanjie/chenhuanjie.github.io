@@ -212,7 +212,7 @@
     
     <!-- 谷歌统计  -->
     
-<meta name="generator" content="Hexo 5.2.0"></head>
+<meta name="generator" content="Hexo 5.4.0"></head>
 
     
         <body class="post-body">
@@ -415,7 +415,7 @@ height:20vh;
 <h3 id="重新签名">6. 重新签名</h3>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jarsigner -verbose -keystore test.keystore -signedjar result.apk com.hello.apk test.keystore</span><br></pre></td></tr></table></figure>
 <p>过程中会要上一步生成keystore时的密码, 大致当看到这样的输出时就成功了:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; 签名者</span><br><span class="line">    X.509, CN&#x3D;..., OU&#x3D;..., O&#x3D;..., L&#x3D;..., ST&#x3D;..., C&#x3D;...</span><br><span class="line">    [可信证书]</span><br><span class="line"></span><br><span class="line">jar 已签名。</span><br><span class="line"></span><br><span class="line">警告:</span><br><span class="line">签名者证书为自签名证书。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; 签名者</span><br><span class="line">    X.509, CN=..., OU=..., O=..., L=..., ST=..., C=...</span><br><span class="line">    [可信证书]</span><br><span class="line"></span><br><span class="line">jar 已签名。</span><br><span class="line"></span><br><span class="line">警告:</span><br><span class="line">签名者证书为自签名证书。</span><br></pre></td></tr></table></figure>
 <p>至此, 这个包已经可以拿来用了, 只是签名发生了变化, 和签名挂钩的各种验证就过不了了, 但是截个帧绰绰有余.</p>
 <hr>
 <h1 id="使用axmleditor修改androidmanifest">使用AXMLEditor修改AndroidManifest</h1>
@@ -444,7 +444,7 @@ height:20vh;
 <hr>
 <h3 id="坑">坑?</h3>
 <p>咱尝试了两种方法, 发现后者输出的apk并不能正常debug, 于是用aapt查看包体的各项属性, 发现:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; .&#x2F;aapt list -v -a result_OK.apk | grep debuggable</span><br><span class="line">    A: android:debuggable(0x0101000f)&#x3D;(type 0x12)0xffffffff</span><br><span class="line">&gt; .&#x2F;aapt list -v -a result_GG.apk | grep debuggable</span><br><span class="line">    A: android:debuggable&#x3D;(type 0x12)0x1 (Raw: &quot;true&quot;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; ./aapt list -v -a result_OK.apk | grep debuggable</span><br><span class="line">    A: android:debuggable(0x0101000f)=(type 0x12)0xffffffff</span><br><span class="line">&gt; ./aapt list -v -a result_GG.apk | grep debuggable</span><br><span class="line">    A: android:debuggable=(type 0x12)0x1 (Raw: &quot;true&quot;)</span><br></pre></td></tr></table></figure>
 <p>emmmm, 用力过猛塞进去一个raw string? 具体原理探究起来可能时间开销比较大, 于是我就放弃了, 还好有一个方法可以用. 害, 当然也可能是我使用方法出错了, 常有的事儿, 如果有知情的朋友欢迎批评, 感谢指教!</p>
 <hr>
 <h3 id="参考感谢">参考&amp;感谢</h3>
@@ -541,8 +541,6 @@ height:20vh;
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-panel-archives">
     <!-- 在ejs中将archive按照时间排序 -->
-    
-    
     
     
     
@@ -715,7 +713,22 @@ jsonContent:
     
         <script src="/scripts/share.js" async></script>    
      
-    </body>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
 </html>
 
 
