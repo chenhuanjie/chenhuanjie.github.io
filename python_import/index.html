@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" >
+    <meta name="author" content="John Doe">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="John Doe">
+    
+    <meta name="keywords" content="Hexo,John Doe">
+    
+    <meta name="description" content="">
+    <meta name="description" content="前段时间由于本蒟蒻才疏学浅, 写出来的服务器被ImportError填满, 于是腾了个时间出来整理下python中import相关的内容, 希望能够对看到这里的同学有些帮助. 其实多数内容都是抄自Python官方文档, 文中相关位置都给出了链接, 其中的内容真的非常详细, 给力! 这个问题本身非常简单, 现有如下所示两个文件: 123456# a.pyimport bx &#x3D; 1# b.pyfrom">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python中的import">
+<meta property="og:url" content="https://chenhuanjie.github.io/python_import/">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前段时间由于本蒟蒻才疏学浅, 写出来的服务器被ImportError填满, 于是腾了个时间出来整理下python中import相关的内容, 希望能够对看到这里的同学有些帮助. 其实多数内容都是抄自Python官方文档, 文中相关位置都给出了链接, 其中的内容真的非常详细, 给力! 这个问题本身非常简单, 现有如下所示两个文件: 123456# a.pyimport bx &#x3D; 1# b.pyfrom">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-14T02:26:52.000Z">
+<meta property="article:modified_time" content="2021-09-24T04:11:06.474Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    
+    <title>Python中的import · undefined</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href= "/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="stylesheet" href= "/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href= "/assets/plane.ico" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script" />
+    <link rel="preload" href="/scripts/main.js" as="script" />
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >焕杰的博客</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">Python中的import</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>焕杰的博客</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:20vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.png)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            Python中的import
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">2.2k</span>阅读时长: <span class="post-count reading-time">8 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2020/12/14</span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <p>前段时间由于本蒟蒻才疏学浅, 写出来的服务器被ImportError填满, 于是腾了个时间出来整理下python中import相关的内容, 希望能够对看到这里的同学有些帮助. 其实多数内容都是抄自Python官方文档, 文中相关位置都给出了链接, 其中的内容真的非常详细, 给力! 这个问题本身非常简单, 现有如下所示两个文件:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># a.py</span></span><br><span class="line"><span class="keyword">import</span> b</span><br><span class="line">x = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># b.py</span></span><br><span class="line"><span class="keyword">from</span> a <span class="keyword">import</span> x</span><br></pre></td></tr></table></figure>
+
+<p>然后在python交互环境中敲<code>import a</code>就会得到一个<code>ImportError: cannot import name x</code>. 表面上看上去由于a中引入了b, b又反过来引入a导致了循环引用, 下面就来考虑下怎么解决这个问题.</p>
+<hr>
+<h3 id="1-import相关概念"><a href="#1-import相关概念" class="headerlink" title="1. import相关概念"></a>1. import相关概念</h3><p>import操作大致可以分为两种, 其内部实现均直接或间接使用了__import__方法:</p>
+<ul>
+<li>import module</li>
+<li>from module import name</li>
+</ul>
+<p>参考<a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/reference/simple_stmts.html#the-import-statement">这份文档</a>, 其定义如下所示:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import_stmt     ::&#x3D;  &quot;import&quot; module [&quot;as&quot; identifier] (&quot;,&quot; module [&quot;as&quot; identifier])*</span><br><span class="line">                     | &quot;from&quot; relative_module &quot;import&quot; identifier [&quot;as&quot; identifier]</span><br><span class="line">                     (&quot;,&quot; identifier [&quot;as&quot; identifier])*</span><br><span class="line">                     | &quot;from&quot; relative_module &quot;import&quot; &quot;(&quot; identifier [&quot;as&quot; identifier]</span><br><span class="line">                     (&quot;,&quot; identifier [&quot;as&quot; identifier])* [&quot;,&quot;] &quot;)&quot;</span><br><span class="line">                     | &quot;from&quot; module &quot;import&quot; &quot;*&quot;</span><br><span class="line">module          ::&#x3D;  (identifier &quot;.&quot;)* identifier</span><br><span class="line">relative_module ::&#x3D;  &quot;.&quot;* module | &quot;.&quot;+</span><br></pre></td></tr></table></figure>
+
+<p>我不喜欢原文列出的繁琐步骤, 这里大概概括下:</p>
+<p>对于<code>import module</code>的方式, 首先查找模块, 进行加载并初始化模块, 并在局部命名空间中定义相对应的名称; 而对于<code>from module import name</code>的方式, 在加载并初始化模块完成后, 会去检查每个需要引入的符号是否存在, 如果没有则去查找子模块, 如果存在则在局部命名空间中定义相应名称, 否则抛出异常.</p>
+<p>也就是说后者相对前者多了一步对于目标模块是否包含要引入的标识符的判断, 也就是说如果引入的时候目标模块中没有包含对应符号就GG了.</p>
+<p>聪明的小伙伴已经发现问题了, 在上面的例子中我们定义<code>x</code>的位置在<code>import b</code>后面, 所以执行到<code>from a import x</code>的时候a中还没有<code>x</code>这个变量. 但是为何第二次到达<code>from a import x</code>时没有将<code>a.py</code>执行一次呢? 以及这个变量是保存在哪里以供import进行检测的呢? 这就需要进一步深入了解.</p>
+<hr>
+<h3 id="2-import导入过程"><a href="#2-import导入过程" class="headerlink" title="2. import导入过程"></a>2. import导入过程</h3><p>上面的流程中, 有一步“加载并初始化模块”, 参考<a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/reference/import.html#loading">这个文档</a>, 其过程应大致为:</p>
+<ol>
+<li>先通过查找器(<em>finder</em>)根据给定的路径查找文件位置, 在3.4之前的python中, 查找器将直接返回一个加载器(<em>loader</em>), 后来会返回一个模块规格说明(<em>module spec</em>)是一个包含有模块引入相关信息的封装</li>
+<li>如果有加载器的话使用该加载器创建一个模块对象, 否则直接实例化一个模块对象</li>
+<li>模块说明中如果不包含加载器, 但是提供了一个查找路径, 那么它是一个名字空间模块(<em>namespace module</em>), 否则不支持引入并raise一个异常</li>
+<li>无论名字空间模块还是普通模块, 先将模块对象加入sys.modules, 然后对于普通模块会去执行模块代码, 如果执行过程中出错再把模块对象从sys.modules中移除 (这里实际上有个特例, 就是对于模块说明中没有指明如何执行模块的情况, 但是原文的伪代码我没看懂)</li>
+</ol>
+<p>注意如果模块已经存在于sys.modules中, 导入操作会直接将其返回, 此外导入过程会先将模块加入sys.modules以防止导入过程发生不停的循环, 这也就是为什么重复引入的时候代码没有被重复执行.</p>
+<hr>
+<h3 id="3-可行的方法"><a href="#3-可行的方法" class="headerlink" title="3. 可行的方法"></a>3. 可行的方法</h3><p>通过上面的内容我们已经可以了解到, 一个模块只要被引用过, 无论import语句写在哪里其实都无需担心其代码会被重复执行, 因为会直接返回sys.modules中保存的对象, 并不会真的重新执行一遍, 除非用imp.reload这种方法强制重新载入.</p>
+<ul>
+<li><strong>可以不用<code>from module import name</code>的方式引入, 使用<code>import module</code></strong></li>
+</ul>
+<p>所有地方都用绝对引入的方式直接引入模块, 这样就不会在引入过程中检查标识符是否存在, 如果最终标识符不存在的话则会在运行中抛出异常, 而且可以避免下面会列出来的一个引入标识符的问题.</p>
+<p>但是这样做的缺点在于, 如果工程目录结构较为复杂, 绝对引入会导致代码又臭又长, 想象一下所有的函数调用都变成<code>rootdir.module.sub_module.function_name()</code>, 那简直惨不忍睹.</p>
+<ul>
+<li><strong>可以在函数内, 或者模块底部调用<code>from module import name</code></strong></li>
+</ul>
+<p>这个方法我不太喜欢, 虽然不会导致模块重复载入, 但是可读性降低了, 在<a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-0008/#imports">pep8</a>和<a target="_blank" rel="noopener" href="https://www.flake8rules.com/rules/E402.html">flake8</a>中都有指出引入操作应当位于模块开始的地方, 并以标准库、相关三方库、本地应用程序或库的顺序进行引入.</p>
+<ul>
+<li><strong>合并代码, 或者重构以合理拆分代码, 将公共部分写入独立的模块</strong></li>
+</ul>
+<p>这个方法可以解决多数问题, 但是要改的地方不少, 而且多数情况下需要具体问题具体分析, 并不能一劳永逸.</p>
+<p>比方说我们游戏有这样一个逻辑, 登录时需要从登录模块调用任务模块以更新每日任务数据. 当时设计跨天重置逻辑时为了节约存储、保证数据一致性, 判断两次请求跨天只用了用户数据中保存的一个时间戳. 但是有时跨天用户并不会退出游戏, 而此时访问任务数据要求能够触发整个跨天重置的逻辑, 于是这俩互相调用导致引入不成功.</p>
+<p>最后在这一点上的处理是考虑模块中会优先加载<code>__init__.py</code>的逻辑, 代码(大概)长这样:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># game/__init__.py</span></span><br><span class="line"><span class="keyword">import</span> game.login</span><br><span class="line"><span class="keyword">import</span> game.quest</span><br><span class="line"></span><br><span class="line"><span class="comment"># game/login.py</span></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> game.config <span class="keyword">import</span> BASE_TIME  <span class="comment"># 某个周一的零点, 用来判断跨天、跨周</span></span><br><span class="line"><span class="keyword">from</span> game.quest <span class="keyword">import</span> refresh_quest</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_new_day</span>(<span class="params">user</span>):</span></span><br><span class="line">    last = (user.lastactive - BASE_TIME) % <span class="number">86400</span></span><br><span class="line">    today = <span class="built_in">int</span>(time.time() - BASE_TIME) % <span class="number">86400</span></span><br><span class="line">    <span class="keyword">if</span> last != today:</span><br><span class="line">        quest_refresh(user)  <span class="comment"># 跨天时刷新任务</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># game/quest</span></span><br><span class="line"><span class="keyword">import</span> game.login</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quest_data</span>(<span class="params">user</span>):</span>  <span class="comment"># 获取数据时检查是否需要跨天刷新</span></span><br><span class="line">    game.login.check_new_day(user)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quest_refresh</span>(<span class="params">user</span>):</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>(捂脸.jpg)上面的方法都没能简单轻松地解决这个问题, 但是我已经是黔驴技穷了, 如果有什么好的方法还请务必告诉我, 感激不尽.</strong></p>
+<hr>
+<h3 id="4-其他收获"><a href="#4-其他收获" class="headerlink" title="4. 其他收获"></a>4. 其他收获</h3><ul>
+<li><strong>一个问题</strong></li>
+</ul>
+<p>上面有提到import找到目标标识符之后会在局部命名空间中定义相应的名称, 这会导致一个问题, 比如现在有:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># config.py</span></span><br><span class="line">CONNECTION_POOL_SIZE = <span class="number">25</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># manager.py</span></span><br><span class="line"><span class="keyword">from</span> config <span class="keyword">import</span> CONNECTION_POOL_SIZE</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">build</span>():</span></span><br><span class="line">    pool = ConnectionPool(size=CONNECTION_POOL_SIZE)  <span class="comment"># 假设有这样一个类</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># main.py</span></span><br><span class="line"><span class="keyword">import</span> config</span><br><span class="line"><span class="keyword">import</span> manager</span><br><span class="line">config.CONNECTION_POOL_SIZE = <span class="number">3</span></span><br><span class="line">manager.build()  <span class="comment"># 最终得到的pool大小为25</span></span><br></pre></td></tr></table></figure>
+
+<p>这样在执行<code>main.py</code>时可以正常修改<code>config.py</code>中的连接池大小配置, 但是没能修改<code>manager.py</code>中的变量大小, 因为在其中使用<code>from</code>进行引入时等同于将变量拷贝到其本地空间一份, 而非常不巧的是这个变量使用了值传递的方式.</p>
+<p>这同时意味着如果要引入的变量是通过引用传递的, 那么通过这两个方法得到的结果是一样的, 但我感觉避免误导, 尽量还是不要用这种方式引入配置.</p>
+<ul>
+<li><strong>一个规则</strong></li>
+</ul>
+<p>在学习import相关内容的过程中了解到的关于是否使用pyc文件加速引入的规则, 以下内容摘抄自<a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/reference/import.html#cached-bytecode-invalidation">这个文档</a>.</p>
+<blockquote>
+<p>默认情况下, Python 通过在所写入缓存文件中保存源文件的最新修改时间戳和大小来实现这一点. 在运行时, 导入系统会通过比对缓存文件中保存的元数据和源文件的元数据确定该缓存的有效性.<br>在 3.7 版更改: 增加了基于哈希的 .pyc 文件. 在此之前, Python 只支持基于时间戳来确定字节码缓存的有效性.</p>
+</blockquote>
+<p><font color="#EEE">这次重新排了个版, 是因为发现使用过长的标题会导致右侧的导航栏非常难看, 汗.</font></p>
+
+    </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://chenhuanjie.github.io">John Doe</a>
+            <p>原文链接：<a href="https://chenhuanjie.github.io/python_import/">https://chenhuanjie.github.io/python_import/</a>
+            <p>发表日期：<a href="https://chenhuanjie.github.io/python_import/">December 14th 2020, 10:26:52 am</a>
+            <p>更新日期：<a href="https://chenhuanjie.github.io/python_import/">September 24th 2021, 12:11:06 pm</a>
+            <p>版权声明：本文采用<a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/ditherfade/" title= "Dither Fade效果学习">
+                    <div class="nextTitle">Dither Fade效果学习</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/cocos2dx/" title= "Cocos2d-x 4.x 项目工程构建">
+                    <div class="prevTitle">Cocos2d-x 4.x 项目工程构建</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- gitalk评论 -->
+
+    <!-- utteranc评论 -->
+
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:chenhuanjie1998@gmail.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer qq" title=qq>
+                  
+                  <img class="profile-qr" src="/assets/qq_qrcode.png" />
+                </span>
+            
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 5
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2021 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/11</span><a class="archive-post-title" href= "/ditherfade/" >Dither Fade效果学习</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2020 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/14</span><a class="archive-post-title" href= "/python_import/" >Python中的import</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/27</span><a class="archive-post-title" href= "/cocos2dx/" >Cocos2d-x 4.x 项目工程构建</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/26</span><a class="archive-post-title" href= "/debuggable/" >apk修改debuggable</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/04</span><a class="archive-post-title" href= "/hello/" >Hello, 博客!</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="cocos"><span class="iconfont-archer">&#xe60a;</span>cocos</span>
+    
+        <span class="sidebar-category-name" data-categories="shader"><span class="iconfont-archer">&#xe60a;</span>shader</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "John Doe"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+
