@@ -355,6 +355,33 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/noise/" >
+            
+                <span>噪声</span>
+        </a>
+        <div class="abstract-content">
+            之前写博客喜欢排版, 浪费很多时间, 而且会导致热情消退之后懒得花时间写博客. 恰逢生活比较忙, 一段时间没写点什么了.
+最近整理了博客页面, 用GLSL es3.0加了这个页面, 打算拿着色器写噪声, 用来展示效果, 很方便. 写的编辑框好像有bug, 建议还是编辑器写, 网页验证结果. 此外这玩意儿在手机上行不通, 能画, 但是结果不对, 不知道是不是精度问题.
+1. 随机数, 白噪声
+这篇文章我计划一点点更新, 把常见的几个噪声加进去. GLSL里需要手搓随机数, 常用的有这么几个hash方法.
+123456float hash11(float n)&#123; return fr...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/09/28</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/ditherfade/" >
             
                 <span>Dither Fade效果学习</span>
@@ -580,9 +607,20 @@ Amplify Shader Editor中提供了两版实现, 一种是使用Bayer抖动表, �
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 5
+        Total : 6
         </div>
         <!-- search  -->
         
@@ -595,6 +633,11 @@ Amplify Shader Editor中提供了两版实现, 一种是使用Bayer抖动表, �
     
     <div class="archive-year"> 2021 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/28</span><a class="archive-post-title" href= "/noise/" >噪声</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -703,7 +746,23 @@ jsonContent:
     </div>
     <!-- async load share.js -->
      
-    </body>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
 </html>
 
 

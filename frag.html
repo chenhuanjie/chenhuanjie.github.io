@@ -27,8 +27,8 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="不推荐直接在这里修改代码, 不仅没有高亮, tab和撤销有时不灵, 搞不好还会弄丢代码, 没必要   .monoLabel {     font-family: monospace;     font-weight: 700;     font-size: 14px;     white-space: pre-wrap;     word-wrap: break-word;">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-09-27T05:55:24.905Z">
-<meta property="article:modified_time" content="2021-09-27T05:55:24.905Z">
+<meta property="article:published_time" content="2021-09-29T08:55:24.560Z">
+<meta property="article:modified_time" content="2021-09-29T08:55:24.560Z">
 <meta property="article:author" content="陈焕杰">
 <meta name="twitter:card" content="summary">
     <meta http-equiv="Cache-control" content="no-cache">
@@ -469,7 +469,7 @@ try {
 } catch (error) {}
 if (!gl) {
     var msg = '当前浏览器不支持WebGL2, 仅显示代码.'
-    canvas.style.minHeight = canvas.style.height = '0';
+    canvas.style.display = 'none';
     setErrorMsg(msg);
     throw new Error(msg);
 }
@@ -485,12 +485,10 @@ function setErrorMsg(msg) {
     var label = document.getElementById('errorLabel');
     if (msg) {
         msg = msg.substr(0, msg.length - 1);  // remove trailing '\x00'
-        console.log('ErrorMsg = ' + msg);
         label.style.color = 'red';
     }
     else {
         msg = 'Successfully compiled shader program';
-        console.log(msg);
         label.style.color = 'lightgreen';
     }
     label.textContent = msg;
@@ -521,6 +519,7 @@ function compileProgram(src) {
         setErrorMsg(gl.getProgramInfoLog(program));
         return;
     }
+    console.log('Successfully compiled shader program');
     if (currentProgram)
         gl.deleteProgram(currentProgram);
     currentProgram = program;
@@ -669,9 +668,20 @@ window.addEventListener('load', drawScene);
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 5
+        Total : 6
         </div>
         <!-- search  -->
         
@@ -684,6 +694,11 @@ window.addEventListener('load', drawScene);
     
     <div class="archive-year"> 2021 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/28</span><a class="archive-post-title" href= "/noise/" >噪声</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -792,7 +807,23 @@ jsonContent:
     </div>
     <!-- async load share.js -->
      
-    </body>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
 </html>
 
 
