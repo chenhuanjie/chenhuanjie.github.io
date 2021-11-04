@@ -27,8 +27,8 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="不推荐直接在这里修改代码, 不仅没有高亮, tab和撤销有时不灵, 搞不好还会弄丢代码, 没必要   .monoLabel {     font-family: monospace;     font-weight: 700;     font-size: 14px;     white-space: pre-wrap;     word-wrap: break-word;">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-09-30T06:34:23.183Z">
-<meta property="article:modified_time" content="2021-09-30T06:34:23.183Z">
+<meta property="article:published_time" content="2021-11-04T10:22:16.378Z">
+<meta property="article:modified_time" content="2021-11-04T10:22:16.375Z">
 <meta property="article:author" content="陈焕杰">
 <meta name="twitter:card" content="summary">
     <meta http-equiv="Cache-control" content="no-cache">
@@ -421,7 +421,8 @@ var container = document.getElementById('inputBox');
 var stickSpan = document.getElementById('stickContent');
 var vertSrc = '#version 300 es\nin vec4 position; void main(){ gl_Position = position; }';
 var compileTimer = 0;
-var sampleSrc = `precision mediump float;
+var sampleSrc = `precision highp float;
+precision highp int;
 uniform float time;
 uniform vec2 resolution;
 out vec4 fragColor;
@@ -621,6 +622,8 @@ window.addEventListener('load', drawScene);
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-panel-archives">
     <!-- 在ejs中将archive按照时间排序 -->
+    
+    
     
     
     
